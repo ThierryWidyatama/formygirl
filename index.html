@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Get Well Soon! 🌸</title>
+    <title>For My Love! 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         /* --- OPTIMASI MOBILE & iOS --- */
@@ -39,6 +39,7 @@
             position: relative;
             -webkit-touch-callout: none;
             user-select: none;
+            touch-action: manipulation;
         }
 
         .petal {
@@ -60,12 +61,11 @@
             }
         }
 
-        /* --- POSISI TENGAH LAYAR (ANTI-NABRAK NAVBAR) --- */
+        /* --- POSISI TENGAH LAYAR --- */
         :root {
             --ground-level: 47vh;
         }
 
-        /* --- MEDIA QUERY UNTUK HP --- */
         @media (max-width: 600px),
         (max-height: 750px) {
             .mc-box {
@@ -87,7 +87,7 @@
             }
         }
 
-        /* --- LAYAR MULAI AWAL (Penting buat Unlock Audio di iOS) --- */
+        /* --- LAYAR MULAI AWAL --- */
         #start-screen {
             position: fixed;
             top: 0;
@@ -127,17 +127,53 @@
             }
         }
 
+        /* --- QUEST BANNER --- */
+        .quest-banner {
+            position: absolute;
+            top: 12vh;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(231, 76, 60, 0.9);
+            border: 4px solid #fff;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 10px;
+            z-index: 50;
+            text-shadow: 2px 2px #000;
+            box-shadow: 0 5px 0 rgba(0, 0, 0, 0.3);
+            display: none;
+            animation: popBounce 0.5s infinite alternate;
+            width: 85%;
+            max-width: 400px;
+            line-height: 1.5;
+        }
+
+        @keyframes popBounce {
+            from {
+                transform: translateX(-50%) scale(1);
+            }
+
+            to {
+                transform: translateX(-50%) scale(1.03);
+            }
+        }
+
         /* --- KARAKTER STEVE --- */
         .character-container {
             position: absolute;
             bottom: var(--ground-level);
-            left: 50%;
+            left: calc(50% + 80px);
             transform: translateX(-50%);
             z-index: 5;
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: left 0.8s ease-in-out, transform 0.3s;
+            transition: opacity 1s ease;
+        }
+
+        .steve-smooth {
+            transition: left 0.8s ease-in-out, bottom 0.8s ease-in-out !important;
         }
 
         .emote {
@@ -354,7 +390,7 @@
             background-color: #00a8ff;
             position: relative;
             transform-origin: top center;
-            transition: all 0.3s;
+            transition: transform 0.1s linear;
         }
 
         .arm::after {
@@ -391,7 +427,6 @@
             z-index: 5;
         }
 
-        /* REVISI POSE STEVE MELUK PETI KE DALEM */
         .pose-holding .arm.left {
             animation: none !important;
             transform: rotate(-60deg) translateY(-5px) !important;
@@ -404,33 +439,10 @@
             z-index: 7;
         }
 
-        .dash-steve {
-            animation: dashSteve 0.15s infinite alternate ease-in-out !important;
-        }
-
-        @keyframes dashSteve {
-            0% {
-                left: calc(50% + 40px);
-            }
-
-            100% {
-                left: calc(50% + 30px);
-            }
-        }
-
         .fighting-steve .arm.left {
-            animation: punchSteve 0.15s infinite alternate linear !important;
+            animation: none !important;
+            transform: rotate(110deg) translate(15px, -15px) !important;
             z-index: 8;
-        }
-
-        @keyframes punchSteve {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(90deg) translate(10px, -10px);
-            }
         }
 
         .legs {
@@ -445,6 +457,7 @@
         .run-off {
             left: 150vw !important;
             transform: translateX(-50%) rotate(15deg) translateY(-20px) !important;
+            transition: left 2.5s linear !important;
         }
 
         /* --- KARAKTER VILLAGER --- */
@@ -457,6 +470,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            transition: left 0.1s linear;
         }
 
         .walking {
@@ -563,8 +577,9 @@
             position: absolute;
             bottom: var(--ground-level);
             left: -50vw;
+            transform: translateX(-50%);
             display: flex;
-            gap: 20px;
+            gap: 30px;
             z-index: 6;
             transition: left 1s ease-in-out;
         }
@@ -574,6 +589,27 @@
             flex-direction: column;
             align-items: center;
             position: relative;
+            transition: filter 0.1s, transform 0.5s, opacity 0.5s;
+            cursor: pointer;
+        }
+
+        .hp-bar-container {
+            width: 50px;
+            height: 8px;
+            background-color: #333;
+            border: 2px solid #fff;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+        }
+
+        .hp-bar-fill {
+            width: 100%;
+            height: 100%;
+            background-color: #2ecc71;
+            transition: width 0.2s ease-out, background-color 0.3s;
         }
 
         .p-head {
@@ -703,44 +739,17 @@
             }
         }
 
-        .fighting-pillager .p-arm.right {
-            animation: punchPillager 0.15s infinite alternate linear !important;
-            z-index: 8;
+        .p-knockback-left {
+            transform: translate(-50vw, -100px) rotate(-90deg) !important;
+            opacity: 0 !important;
         }
 
-        @keyframes punchPillager {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(-90deg) translate(-10px, -10px);
-            }
+        .p-knockback-right {
+            transform: translate(50vw, -100px) rotate(90deg) !important;
+            opacity: 0 !important;
         }
 
-        .knockback-left {
-            animation: flyLeft 0.5s forwards !important;
-        }
-
-        @keyframes flyLeft {
-            to {
-                transform: translate(-50vw, -100px) rotate(-90deg);
-                opacity: 0;
-            }
-        }
-
-        .knockback-right {
-            animation: flyRight 0.5s forwards !important;
-        }
-
-        @keyframes flyRight {
-            to {
-                transform: translate(50vw, -100px) rotate(90deg);
-                opacity: 0;
-            }
-        }
-
-        /* --- OBJEK PETI (CHEST) & EFEK --- */
+        /* --- OBJEK PETI (CHEST) --- */
         .mc-chest {
             width: 45px;
             height: 45px;
@@ -772,14 +781,15 @@
         .chest-ground {
             position: absolute;
             bottom: var(--ground-level);
-            left: calc(50% + 80px);
+            left: 50%;
             transform: translateX(-50%);
             display: none;
-            z-index: 20;
+            z-index: 4;
             transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .chest-ready {
+            z-index: 20 !important;
             cursor: pointer;
             animation: glowPulse 1.5s infinite alternate;
         }
@@ -800,7 +810,6 @@
             }
         }
 
-        /* REVISI CAHAYA ILAHI (Redup-terang, tidak berputar) */
         .overlay-dark {
             position: fixed;
             top: 0;
@@ -811,7 +820,7 @@
             z-index: 90;
             display: none;
             opacity: 0;
-            transition: opacity 1s;
+            transition: opacity 1.5s ease-in-out;
         }
 
         .light-burst {
@@ -826,7 +835,7 @@
             display: none;
             opacity: 0;
             animation: pulseBurst 2.5s infinite alternate ease-in-out;
-            transition: opacity 1s;
+            transition: opacity 1.5s ease-in-out;
         }
 
         @keyframes pulseBurst {
@@ -863,7 +872,6 @@
             }
         }
 
-        /* REVISI Z-INDEX BUNGA NAIK KE 110 */
         .final-flower {
             position: fixed;
             top: 50%;
@@ -873,7 +881,7 @@
             z-index: 110;
             display: none;
             filter: drop-shadow(0 0 20px #ff9eb5);
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             line-height: 1;
             white-space: nowrap;
             text-align: center;
@@ -889,7 +897,12 @@
             transform: translate(-50%, -50%) scale(2);
         }
 
-        /* --- DIALOG BOX DIPATOK DI TENGAH LAYAR BAWAH --- */
+        .flower-fly-up {
+            transform: translate(-50%, -150vh) scale(2) !important;
+            transition: transform 1.5s ease-in !important;
+        }
+
+        /* --- DIALOG BOX --- */
         .mc-box {
             background-color: #c6c6c6;
             border: 6px solid #000;
@@ -909,11 +922,17 @@
             justify-content: space-between;
         }
 
-        /* KELAS BARU BUAT NURUNIN DIALOG BOX PAS BUNGA MUNCUL */
         .dialogue-bottom {
             top: 75vh !important;
             transition: top 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
+
+        .dialogue-drop-down {
+            top: 150vh !important;
+            transition: top 1s ease-in !important;
+        }
+
+        /* Animasi Kotak Jatuh */
 
         .dialogue-text {
             font-size: 14px;
@@ -966,6 +985,153 @@
             text-shadow: 1px 1px #fff;
             line-height: 1.6;
         }
+
+        /* --- FINAL CREDITS SCREEN --- */
+        #credits-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            /* Ganti background jadi Hijau Gelap Minecraft */
+            /* background-color: #1e3718; */
+            /* Background gambar dengan layer gelap (rgba) */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('wallpaper2.webp');
+            background-size: cover;
+
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+            opacity: 0;
+            transition: opacity 1.5s ease-in;
+            color: #fff;
+            overflow: hidden;
+            /* Biar daun ga ngerusak scroll */
+        }
+
+        /* --- CSS DAUN MINECRAFT BERJATUHAN --- */
+        .leaf {
+            position: absolute;
+            top: -20px;
+            /* Mulai dari atas layar, bukan tengah */
+            width: 12px;
+            height: 12px;
+            /* Ukuran kotak daun */
+            background-color: #38761d;
+            /* Warna daun ijo menkrep */
+            /* Bikin efek kotak pixelated menkrep */
+            box-shadow: inset -3px -3px 0px rgba(0, 0, 0, 0.3), 3px 3px 0px rgba(255, 255, 255, 0.2);
+            opacity: 0.8;
+            z-index: 2001;
+            /* Di atas background credits, di bawah teks */
+            animation: leafFall linear infinite;
+            transform: translateZ(0);
+        }
+
+        @keyframes leafFall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.8;
+            }
+
+            90% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .credits-content {
+            animation: floatUp 2s ease-out;
+            z-index: 2002;
+            position: relative;
+        }
+
+        @keyframes floatUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .credit-title {
+            color: #a2ff86;
+            font-size: 12px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            text-shadow: 2px 2px #000;
+        }
+
+        .credit-body {
+            font-size: 11px;
+            line-height: 2.2;
+            margin-bottom: 30px;
+            color: #eee;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 2px 2px #000;
+        }
+
+        .credit-footer {
+            color: #ffeb3b;
+            font-size: 12px;
+            text-shadow: 2px 2px #000;
+        }
+
+        .credits-content {
+            animation: floatUp 2s ease-out;
+        }
+
+        @keyframes floatUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .credit-title {
+            color: #ff9eb5;
+            font-size: 12px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .credit-body {
+            font-size: 11px;
+            line-height: 2.2;
+            margin-bottom: 30px;
+            color: #ddd;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .credit-footer {
+            color: #ff4757;
+            font-size: 12px;
+        }
     </style>
 </head>
 
@@ -973,13 +1139,12 @@
 
     <div id="wallpaper"></div>
 
-    <!-- Audio BGM Minecraft -->
     <audio id="bg-music" loop>
         <source src="bgm.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < 20; i++) {
             let petal = document.createElement('div');
             petal.className = 'petal';
             petal.style.left = Math.random() * 100 + 'vw';
@@ -989,6 +1154,12 @@
         }
     </script>
 
+    <!-- QUEST BANNER -->
+    <div id="quest-banner" class="quest-banner">
+        QUEST: LINDUNGI KOTAKNYA!<br><br>
+        <span style="font-size:9px; color: #feca57;">TAP PADA PILLAGER UNTUK MENYERANG!</span>
+    </div>
+
     <!-- LAYAR MULAI -->
     <div id="start-screen">
         <p style="color: white; font-size: 12px; margin-bottom: 30px; text-align: center; line-height: 1.5;">Untuk
@@ -996,15 +1167,25 @@
         <button class="start-btn" onclick="startGame()">Sentuh Untuk Mulai</button>
     </div>
 
-    <!-- Overlay & Efek Cahaya -->
+    <!-- Overlay & Efek Cahaya Akhir -->
     <div id="overlay" class="overlay-dark"></div>
     <div id="light-burst" class="light-burst"></div>
     <div id="final-flower" class="final-flower">💐✨</div>
 
+    <!-- CREDITS SCREEN RAHASIA -->
+    <div id="credits-screen">
+        <div class="credits-content">
+            <div class="credit-title">Made with love by Thiee &lt;3</div>
+            <div class="credit-body">Love, semoga kmu bisa terhibur dengan hadiah kecil yg aku kasih dan aku buat untuk
+                kmu...<br><br>Semoga cepet sembuh yah, aku sedih, khawatir klo kmu sakit :((</div>
+            <div class="credit-footer">Love u so much ❤️</div>
+        </div>
+    </div>
+
     <!-- Chest di tanah -->
     <div id="chest-ground" class="mc-chest chest-ground" onclick="bukaPetiAkhir()"></div>
 
-    <!-- Karakter Villager -->
+    <!-- Karakter Villager Kurir -->
     <div id="villager" class="villager-container">
         <div class="v-head">
             <div class="v-eye left">
@@ -1022,9 +1203,12 @@
         <div class="v-legs"></div>
     </div>
 
-    <!-- Gerombolan Pillager -->
+    <!-- Gerombolan Pillager (Musuh) -->
     <div id="pillagers" class="pillager-group">
-        <div class="pillager" id="pillager-1">
+        <div class="pillager" id="pillager-1" onclick="attackPillager(1)">
+            <div class="hp-bar-container" id="hp-1">
+                <div class="hp-bar-fill" id="hp-fill-1"></div>
+            </div>
             <div class="p-head">
                 <div class="p-eyebrow left"></div>
                 <div class="p-eyebrow right"></div>
@@ -1043,7 +1227,10 @@
             </div>
             <div class="p-legs"></div>
         </div>
-        <div class="pillager" id="pillager-2">
+        <div class="pillager" id="pillager-2" onclick="attackPillager(2)">
+            <div class="hp-bar-container" id="hp-2">
+                <div class="hp-bar-fill" id="hp-fill-2"></div>
+            </div>
             <div class="p-head">
                 <div class="p-eyebrow left"></div>
                 <div class="p-eyebrow right"></div>
@@ -1064,7 +1251,7 @@
         </div>
     </div>
 
-    <!-- Karakter Steve -->
+    <!-- Karakter Steve (Player) -->
     <div id="character" class="character-container idle">
         <div id="emote" class="emote">!</div>
         <div class="head">
@@ -1105,67 +1292,44 @@
         const btnArea = document.getElementById('btnArea');
         const character = document.getElementById('character');
         const emote = document.getElementById('emote');
+        const STEVE_HOME_X = 'calc(50% + 80px)';
 
-        // --- SISTEM AUDIO ---
         let audioCtx;
         function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
         function playTutSound() {
             if (!audioCtx || audioCtx.state !== 'running') return;
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(450, audioCtx.currentTime);
-
-            // REVISI VOLUME DIKERASIN (0.15)
-            gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-
-            osc.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.05);
+            const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+            osc.type = 'square'; osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.05);
         }
 
-        // --- SUARA PUKULAN GELUD RETRO ---
         function playHitSound() {
             if (!audioCtx || audioCtx.state !== 'running') return;
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+            const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(200, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.15);
-
-            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-
-            osc.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.15);
+            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.15);
         }
 
-        // --- SISTEM MULAI ---
         function startGame() {
             initAudio();
             document.getElementById('start-screen').style.display = 'none';
 
-            // REVISI MAININ BGM MINECRAFT
             const bgMusic = document.getElementById('bg-music');
-            bgMusic.volume = 0.2;
-            bgMusic.play().catch(err => console.log("BGM ketahan browser:", err));
+            bgMusic.volume = 0.15;
+            bgMusic.play().catch(err => console.log("BGM ketahan:", err));
 
             setTimeout(() => {
-                typeWriter("Halo, kamu pasti cewe aku...", () => {
+                character.classList.add('steve-smooth');
+                typeWriter("Halo, kamu pasti cewenya Thiee kan?", () => {
                     showButtons(`<button class="mc-btn" onclick="alurIya()">Iyaa</button> <button class="mc-btn" onclick="alurTidak()">Tidak</button>`);
                 });
             }, 500);
@@ -1175,7 +1339,6 @@
             dialogueBox.innerHTML = ''; btnArea.innerHTML = '';
             character.classList.add('talking');
             let i = 0; let speed = 40;
-
             function type() {
                 if (i < text.length) {
                     if (text.charAt(i) === '<') {
@@ -1184,11 +1347,7 @@
                         i = endTag + 1;
                     } else {
                         dialogueBox.innerHTML += text.charAt(i);
-
-                        if (text.charAt(i).match(/[a-zA-Z0-9]/) && i % 2 === 0) {
-                            playTutSound();
-                        }
-
+                        if (text.charAt(i).match(/[a-zA-Z0-9]/) && i % 2 === 0) playTutSound();
                         i++;
                     }
                     setTimeout(type, speed);
@@ -1208,8 +1367,21 @@
 
         function karakterPergiNyariThie(callback) {
             character.classList.remove('idle'); character.classList.add('run-off');
-            dialogueBox.innerHTML = "<span class='action-text'>... (Lari keluar layar nyari Thie bentar) ...</span>";
-            setTimeout(() => { character.classList.remove('run-off'); setTimeout(() => { character.classList.add('idle'); callback(); }, 1500); }, 2500);
+            dialogueBox.innerHTML = "<span class='action-text'>... (Lari untuk konfirmasi ke Thiee bentar) ...</span>";
+            setTimeout(() => {
+                character.style.transition = 'none';
+                character.style.left = '-50vw';
+                setTimeout(() => {
+                    character.style.transition = 'left 2.5s linear';
+                    character.classList.remove('run-off');
+                    character.style.left = STEVE_HOME_X;
+                    setTimeout(() => {
+                        character.classList.add('idle');
+                        character.style.transition = 'none';
+                        callback();
+                    }, 2500);
+                }, 1000);
+            }, 2500);
         }
 
         function resetPose() {
@@ -1217,127 +1389,78 @@
             emote.classList.remove('show');
         }
 
-        // --- ALUR CERITA ---
-        function alurTidak() { typeWriter("Lah Thie gimana dah, katanya ini cewenya... Sebentar...", () => { setTimeout(() => { karakterPergiNyariThie(() => { typeWriter("Bener ko ini cewenya, kamu bohong ya?", () => { showButtons(`<button class="mc-btn" onclick="alurLanjut()">Iyaa deh aku ketahuan</button>`); }); }); }, 1000); }); }
-        function alurIya() { typeWriter("Sebentar, nanya Thie dulu ya...", () => { setTimeout(() => { karakterPergiNyariThie(() => { typeWriter("Oiya bener hehehe, aku dengar kamu sakit ya?", () => { tanyaKondisiSakit(); }); }); }, 1000); }); }
+        function alurTidak() { typeWriter("Lah Thie gimana dah, katanya ini cewenya... Sebentar, aku akan kembali.", () => { setTimeout(() => { karakterPergiNyariThie(() => { typeWriter("Bener ko ini cewenya, kamu bohong ya?", () => { showButtons(`<button class="mc-btn" onclick="alurLanjut()">Iyaa deh aku ketahuan</button>`); }); }); }, 1000); }); }
+        function alurIya() { typeWriter("Rill kah?, Bentar nanya Thiee dulu...", () => { setTimeout(() => { karakterPergiNyariThie(() => { typeWriter("Oiya bener hehehe, aku dengar kamu sakit ya?", () => { tanyaKondisiSakit(); }); }); }, 1000); }); }
         function alurLanjut() { typeWriter("Hehehe iseng banget... Btw, aku dengar kamu sakit ya?", () => { tanyaKondisiSakit(); }); }
-
         function tanyaKondisiSakit() { showButtons(`<button class="mc-btn" onclick="jawabSakitNggak()">Nggak</button> <button class="mc-btn" onclick="jawabSakitIyaa()">Iyaa</button>`); }
-
-        function jawabSakitNggak() {
-            resetPose(); character.classList.add('pose-angry'); emote.innerText = "!"; emote.className = "emote emote-angry show";
-            typeWriter("Boong ah, udah ngaku aja", () => { showButtons(`<button class="mc-btn" onclick="jawabSakitIyaa()">Iyaudah deh</button>`); });
-        }
-
-        function jawabSakitIyaa() {
-            resetPose(); character.classList.add('pose-thinking'); emote.innerText = "?"; emote.className = "emote emote-think show";
-            typeWriter("Gimana keadaan kamu sekarang?", () => { showButtons(`<button class="mc-btn" onclick="kondisiMendingan()">Mendingan</button> <button class="mc-btn" onclick="kondisiMasihSakit()">Masih sakit</button>`); });
-        }
-
-        function kondisiMendingan() {
-            resetPose(); character.classList.add('pose-happy'); emote.innerText = "❤️"; emote.className = "emote emote-happy show";
-            typeWriter("Yeyy, syukurlah klo ada tanda baik, aku ada sesuatu biar kmu makin mendingan lagi nih...", () => { showButtons(`<button class="mc-btn" onclick="cutsceneVillager()">Apa tuh?</button>`); });
-        }
-
-        function kondisiMasihSakit() {
-            resetPose(); character.classList.add('pose-sad'); emote.innerText = "💧"; emote.className = "emote emote-sad show";
-            typeWriter("semoga mendingan yaa :((, aku ada sesuatu yg mungkin bisa hibur kmu...", () => { showButtons(`<button class="mc-btn" onclick="cutsceneVillager()">Apa tuh?</button>`); });
-        }
+        function jawabSakitNggak() { resetPose(); character.classList.add('pose-angry'); emote.innerText = "!"; emote.className = "emote emote-angry show"; typeWriter("Boong ah, udah ngaku aja", () => { showButtons(`<button class="mc-btn" onclick="jawabSakitIyaa()">Iyaudah deh</button>`); }); }
+        function jawabSakitIyaa() { resetPose(); character.classList.add('pose-thinking'); emote.innerText = "?"; emote.className = "emote emote-think show"; typeWriter("Gimana keadaan kamu sekarang?", () => { showButtons(`<button class="mc-btn" onclick="kondisiMendingan()">Mendingan</button> <button class="mc-btn" onclick="kondisiMasihSakit()">Masih sakit</button>`); }); }
+        function kondisiMendingan() { resetPose(); character.classList.add('pose-happy'); emote.innerText = "❤️"; emote.className = "emote emote-happy show"; typeWriter("Yeyy, syukurlah klo ada tanda baik, aku ada sesuatu biar kmu makin mendingan lagi nih...", () => { showButtons(`<button class="mc-btn" onclick="cutsceneVillager()">Apa tuh?</button>`); }); }
+        function kondisiMasihSakit() { resetPose(); character.classList.add('pose-sad'); emote.innerText = "💧"; emote.className = "emote emote-sad show"; typeWriter("semoga mendingan yaa :((, aku ada sesuatu yg mungkin bisa hibur kmu...", () => { showButtons(`<button class="mc-btn" onclick="cutsceneVillager()">Apa tuh?</button>`); }); }
 
         function cutsceneVillager() {
             resetPose();
             dialogueBox.innerHTML = "<span class='action-text'>... (Kurir Villager datang bawa paket) ...</span>";
             btnArea.innerHTML = '';
-
             const villager = document.getElementById('villager');
             const heldChest = document.getElementById('held-chest');
             const steveChest = document.getElementById('steve-chest');
 
-            villager.style.transition = 'left 2s linear'; villager.style.animationDuration = '0.25s';
+            villager.style.transition = 'left 2s linear';
             villager.classList.add('walking');
-
             setTimeout(() => { villager.style.left = '62%'; }, 100);
 
             setTimeout(() => {
                 villager.classList.remove('walking');
                 heldChest.style.display = 'none'; steveChest.style.display = 'block'; character.classList.add('pose-holding');
-
                 setTimeout(() => {
-                    villager.style.transition = 'left 0.8s linear'; villager.style.animationDuration = '0.1s';
+                    villager.style.transition = 'left 0.8s linear';
                     villager.classList.add('walking'); villager.style.left = '150vw';
-
                     setTimeout(() => {
                         villager.classList.remove('walking');
-                        typeWriter("Sudah siap untuk tau apa isinya?", () => { showButtons(`<button class="mc-btn" onclick="cutscenePillager()">Siap!</button>`); });
+                        character.style.transition = 'none';
+                        typeWriter("Kira-kira apa yah isinyaa..?", () => { showButtons(`<button class="mc-btn" onclick="cutscenePillager()">Aku penasaran!</button>`); });
                     }, 1000);
                 }, 800);
             }, 2100);
         }
 
+        let pillagerHP = [10, 10];
+        let battleActive = false;
+        let deadCount = 0;
+        let isBlinking = false;
+
         function cutscenePillager() {
             btnArea.innerHTML = '';
-            dialogueBox.innerHTML = "<span class='action-text'>... (Tiba-tiba sekelompok Pillager datang mencegat!) ...</span>";
+            dialogueBox.innerHTML = "<span class='action-text'>... (Tiba-tiba sekelompok Pillager datang!) ...</span>";
 
-            const pillagers = document.getElementById('pillagers');
-            const steveChest = document.getElementById('steve-chest');
+            const pillagersGroup = document.getElementById('pillagers');
+            const steveChestOnBody = document.getElementById('steve-chest');
             const groundChest = document.getElementById('chest-ground');
 
-            pillagers.style.left = 'calc(50% - 130px)';
+            pillagersGroup.style.left = 'calc(50% - 110px)';
 
             setTimeout(() => {
                 typeWriter("<span class='enemy-text'>[Pillager]: Berikan peti itu atau kamu akan menyesal!</span>", () => {
-
                     setTimeout(() => {
                         resetPose(); character.classList.add('pose-angry');
-                        typeWriter("Tidak, ini untuk Cewenya Thie!", () => {
-
+                        typeWriter("Tidak, ini untuk cewenya Thie!", () => {
                             setTimeout(() => {
                                 character.classList.remove('pose-holding');
-                                steveChest.style.display = 'none';
+                                steveChestOnBody.style.display = 'none';
                                 groundChest.style.display = 'block';
-                                groundChest.style.left = 'calc(50% + 80px)';
-
-                                dialogueBox.innerHTML = "<span class='action-text'>... (Pertarungan sengit terjadi!) ...</span>";
-
+                                dialogueBox.innerHTML = "<span class='action-text'>[ QUEST: TAP PADA PILLAGER UNTUK MENYERANG! ]</span>";
                                 character.classList.remove('idle');
-                                character.style.left = 'calc(50% + 40px)';
 
                                 setTimeout(() => {
-                                    character.classList.add('fighting-steve', 'dash-steve');
-                                    pillagers.classList.add('fighting-pillager', 'dash-pillager');
+                                    document.getElementById('hp-1').style.display = 'block';
+                                    document.getElementById('hp-2').style.display = 'block';
+                                    document.getElementById('quest-banner').style.display = 'block';
 
-                                    // --- SOUND EFEK GELUD MULAI ---
-                                    let geludSound = setInterval(() => {
-                                        playHitSound();
-                                    }, 200);
-
-                                    setTimeout(() => {
-                                        clearInterval(geludSound);
-
-                                        character.classList.remove('fighting-steve', 'dash-steve');
-                                        pillagers.classList.remove('fighting-pillager', 'dash-pillager');
-
-                                        document.getElementById('pillager-1').classList.add('knockback-left');
-                                        document.getElementById('pillager-2').classList.add('knockback-right');
-
-                                        playHitSound(); // Suara Pillager Terpental
-
-                                        setTimeout(() => {
-                                            character.style.left = '50%';
-                                            character.classList.add('idle');
-                                            resetPose();
-
-                                            setTimeout(() => {
-                                                typeWriter("Maaf tadi ada gangguan kecil, jadi, apakah kamu siap melihat peti ini isinya apa?", () => {
-                                                    showButtons(`<button class="mc-btn" onclick="siapBukaPeti()">Siap!</button>`);
-                                                });
-                                            }, 1000);
-
-                                        }, 500);
-                                    }, 1500);
-
-                                }, 800);
-
+                                    pillagerHP = [10, 10];
+                                    deadCount = 0;
+                                    battleActive = true;
+                                }, 500);
                             }, 1500);
                         });
                     }, 2000);
@@ -1345,15 +1468,80 @@
             }, 1200);
         }
 
-        function siapBukaPeti() {
-            btnArea.innerHTML = '';
-            dialogueBox.innerHTML = "<span class='action-text'>[ KLIK PETI DI SEBELAH STEVE UNTUK MEMBUKA ]</span>";
+        function attackPillager(targetId) {
+            if (!battleActive || isBlinking) return;
+            let targetIdx = targetId - 1;
+            if (pillagerHP[targetIdx] <= 0) return;
 
-            const groundChest = document.getElementById('chest-ground');
-            groundChest.classList.add('chest-ready');
+            isBlinking = true;
+
+            let blinkX = (targetId === 1) ? 'calc(50% - 125px)' : 'calc(50% - 35px)';
+
+            character.style.left = blinkX;
+            character.classList.add('fighting-steve');
+            playHitSound();
+
+            const targetEl = document.getElementById('pillager-' + targetId);
+            targetEl.style.filter = 'brightness(2) sepia(1) hue-rotate(-50deg) saturate(5)';
+
+            pillagerHP[targetIdx]--;
+            let hpPercent = pillagerHP[targetIdx] * 10;
+            const hpFill = document.getElementById('hp-fill-' + targetId);
+            hpFill.style.width = hpPercent + '%';
+
+            if (hpPercent <= 30) hpFill.style.backgroundColor = '#e74c3c';
+            else if (hpPercent <= 60) hpFill.style.backgroundColor = '#f1c40f';
+
+            setTimeout(() => {
+                targetEl.style.filter = 'none';
+                character.style.left = STEVE_HOME_X;
+                character.classList.remove('fighting-steve');
+
+                setTimeout(() => {
+                    isBlinking = false;
+
+                    if (pillagerHP[targetIdx] <= 0) {
+                        targetEl.style.cursor = 'default';
+                        document.getElementById('hp-' + targetId).style.display = 'none';
+
+                        if (targetId === 1) targetEl.classList.add('p-knockback-left');
+                        else targetEl.classList.add('p-knockback-right');
+
+                        playHitSound();
+                        deadCount++;
+
+                        if (deadCount >= 2) {
+                            battleActive = false;
+                            document.getElementById('quest-banner').style.display = 'none';
+
+                            setTimeout(() => {
+                                character.classList.add('steve-smooth');
+                                character.style.left = '50%';
+                                character.classList.add('idle');
+                                resetPose();
+                                document.getElementById('chest-ground').style.zIndex = '20';
+
+                                setTimeout(() => {
+                                    character.classList.remove('steve-smooth');
+                                    typeWriter("Wah kamu hebat sekali, Thie pasti bangga!, Bagaimana klo kita buka petinya?", () => {
+                                        showButtons(`<button class="mc-btn" onclick="siapBukaPeti()">Aku mau!</button>`);
+                                    });
+                                }, 1000);
+                            }, 800);
+                        }
+                    }
+                }, 150);
+            }, 100);
         }
 
-        // --- FINAL SURPRISE --- //
+        function siapBukaPeti() {
+            btnArea.innerHTML = '';
+            dialogueBox.innerHTML = "<span class='action-text'>[ KETUK PETI YANG ADA DI DEPAN STEVE UNTUK MEMBUKA ]</span>";
+            const groundChest = document.getElementById('chest-ground');
+            groundChest.classList.add('chest-ready');
+            groundChest.style.zIndex = '20';
+        }
+
         function bukaPetiAkhir() {
             const groundChest = document.getElementById('chest-ground');
 
@@ -1367,9 +1555,7 @@
 
                 overlay.style.display = 'block';
                 burst.style.display = 'block';
-
                 void overlay.offsetWidth;
-
                 overlay.style.opacity = '1';
                 burst.style.opacity = '1';
 
@@ -1380,8 +1566,6 @@
 
                     setTimeout(() => {
                         groundChest.style.display = 'none';
-
-                        // REVISI KOTAK DIALOG TURUN KE BAWAH
                         dialogueContainer.classList.add('dialogue-bottom');
 
                         const flower = document.getElementById('final-flower');
@@ -1390,22 +1574,63 @@
                         flower.classList.add('pop');
 
                         if (audioCtx && audioCtx.state === 'running') {
-                            const osc = audioCtx.createOscillator();
-                            const gn = audioCtx.createGain();
-                            osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-                            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.3);
-                            gn.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                            gn.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
+                            const osc = audioCtx.createOscillator(); const gn = audioCtx.createGain();
+                            osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.3);
+                            gn.gain.setValueAtTime(0.05, audioCtx.currentTime); gn.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
                             osc.connect(gn); gn.connect(audioCtx.destination);
                             osc.start(); osc.stop(audioCtx.currentTime + 1.5);
                         }
 
-                        typeWriter("<span class='pink-text'>Yeyy kmu dapet bunga dari Thiee... Silahkan ambil diluar rumah yah...</span>", () => { });
+                        // TOMBOL YEYY DITAMBAHKAN DI SINI
+                        typeWriter("<span class='pink-text'>Yeyy kmu dapet bunga dari Thiee... Bunga akan sampai hari ini yah...</span>", () => {
+                            showButtons(`<button class="mc-btn" onclick="showCredits()" style="padding: 15px 25px; font-size: 14px; background-color: #d81b60;">Pesan dari Thiee :3</button>`);
+                        });
 
                     }, 1500);
-
                 }, 1000);
             }
+        }
+
+        // --- FUNGSI MUNCULIN CREDITS (UDAH GAK SEREM + ADA DAUN) ---
+        function showCredits() {
+            playTutSound();
+
+            // 1. Geser Kotak Dialog Ke Bawah
+            dialogueContainer.classList.remove('dialogue-bottom');
+            dialogueContainer.classList.add('dialogue-drop-down');
+
+            // 2. Bunga Raksasa Terbang Ke Atas
+            const flower = document.getElementById('final-flower');
+            flower.classList.add('flower-fly-up');
+
+            // 3. Karakter & Cahaya Pudar
+            document.getElementById('character').style.opacity = '0';
+            document.getElementById('light-burst').style.opacity = '0';
+
+            // 4. Munculin Tampilan Credits
+            setTimeout(() => {
+                const credits = document.getElementById('credits-screen');
+                credits.style.display = 'flex';
+                void credits.offsetWidth;
+                credits.style.opacity = '1';
+
+                // --- KODE BARU: GENERATE DAUN MINECRAFT BERJATUHAN ---
+                // Kita bikin daunnya muncul di dalam container credits
+                for (let i = 0; i < 25; i++) {
+                    let leaf = document.createElement('div');
+                    leaf.className = 'leaf';
+                    leaf.style.left = Math.random() * 100 + 'vw';
+                    // Variasi warna ijo dikit biar estetik
+                    const greenVariations = ['#38761d', '#2e5e16', '#4e9a2d'];
+                    leaf.style.backgroundColor = greenVariations[Math.floor(Math.random() * greenVariations.length)];
+
+                    leaf.style.animationDuration = (Math.random() * 5 + 4) + 's'; // Jatuh pelan (4-9 detik)
+                    leaf.style.animationDelay = Math.random() * 5 + 's'; // Delay masuk
+                    credits.appendChild(leaf);
+                }
+                // ----------------------------------------------------
+
+            }, 800);
         }
     </script>
 </body>
