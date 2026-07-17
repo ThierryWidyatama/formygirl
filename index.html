@@ -62,7 +62,6 @@
 
         /* --- POSISI TENGAH LAYAR (ANTI-NABRAK NAVBAR) --- */
         :root {
-            /* Tanah dikunci di 47% dari bawah layar (sedikit di atas tengah) */
             --ground-level: 47vh;
         }
 
@@ -392,15 +391,16 @@
             z-index: 5;
         }
 
+        /* REVISI POSE STEVE MELUK PETI KE DALEM */
         .pose-holding .arm.left {
             animation: none !important;
-            transform: rotate(145deg) translate(-5px, -15px) !important;
+            transform: rotate(-60deg) translateY(-5px) !important;
             z-index: 7;
         }
 
         .pose-holding .arm.right {
             animation: none !important;
-            transform: rotate(-145deg) translate(5px, -15px) !important;
+            transform: rotate(60deg) translateY(-5px) !important;
             z-index: 7;
         }
 
@@ -800,6 +800,7 @@
             }
         }
 
+        /* REVISI CAHAYA ILAHI (Redup-terang, tidak berputar) */
         .overlay-dark {
             position: fixed;
             top: 0;
@@ -817,25 +818,26 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            width: 150vmax;
-            height: 150vmax;
-            background: repeating-conic-gradient(from 0deg, rgba(255, 235, 100, 0.8) 0deg 15deg, transparent 15deg 30deg);
+            width: 100vmax;
+            height: 100vmax;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 235, 100, 0.5) 30%, transparent 70%);
             transform: translate(-50%, -50%);
             z-index: 95;
             display: none;
             opacity: 0;
-            animation: spinBurst 5s linear infinite;
+            animation: pulseBurst 2.5s infinite alternate ease-in-out;
             transition: opacity 1s;
-            transform-origin: center;
         }
 
-        @keyframes spinBurst {
+        @keyframes pulseBurst {
             0% {
-                transform: translate(-50%, -50%) rotate(0deg);
+                transform: translate(-50%, -50%) scale(0.9);
+                opacity: 0.6;
             }
 
             100% {
-                transform: translate(-50%, -50%) rotate(360deg);
+                transform: translate(-50%, -50%) scale(1.1);
+                opacity: 1;
             }
         }
 
@@ -861,13 +863,14 @@
             }
         }
 
+        /* REVISI Z-INDEX BUNGA NAIK KE 110 */
         .final-flower {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
             font-size: 80px;
-            z-index: 101;
+            z-index: 110;
             display: none;
             filter: drop-shadow(0 0 20px #ff9eb5);
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -895,19 +898,21 @@
             width: 90%;
             max-width: 600px;
             min-height: 120px;
-
-            /* Dikunci menggunakan absolute position biar gak kegencet navbar HP */
             position: absolute;
             top: 55vh;
-            /* Muncul dari tengah layar ke bawah */
             left: 50%;
             transform: translateX(-50%);
             margin: 0 !important;
-
             z-index: 10;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+
+        /* KELAS BARU BUAT NURUNIN DIALOG BOX PAS BUNGA MUNCUL */
+        .dialogue-bottom {
+            top: 75vh !important;
+            transition: top 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .dialogue-text {
@@ -967,6 +972,11 @@
 <body>
 
     <div id="wallpaper"></div>
+
+    <!-- Audio BGM Minecraft -->
+    <audio id="bg-music" loop>
+        <source src="bgm.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         for (let i = 0; i < 25; i++) {
@@ -1096,7 +1106,7 @@
         const character = document.getElementById('character');
         const emote = document.getElementById('emote');
 
-        // --- SISTEM AUDIO (TUT TUT TUT) ---
+        // --- SISTEM AUDIO ---
         let audioCtx;
         function initAudio() {
             if (!audioCtx) {
@@ -1113,8 +1123,7 @@
             osc.type = 'square';
             osc.frequency.setValueAtTime(450, audioCtx.currentTime);
 
-            // --- VOLUME DIBESARKAN DI SINI ---
-            // Awalnya 0.015, sekarang diubah jadi 0.15 biar kedengeran keras
+            // REVISI VOLUME DIKERASIN (0.15)
             gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
 
@@ -1125,10 +1134,35 @@
             osc.stop(audioCtx.currentTime + 0.05);
         }
 
+        // --- SUARA PUKULAN GELUD RETRO ---
+        function playHitSound() {
+            if (!audioCtx || audioCtx.state !== 'running') return;
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.15);
+
+            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.15);
+        }
+
         // --- SISTEM MULAI ---
         function startGame() {
             initAudio();
             document.getElementById('start-screen').style.display = 'none';
+
+            // REVISI MAININ BGM MINECRAFT
+            const bgMusic = document.getElementById('bg-music');
+            bgMusic.volume = 0.2;
+            bgMusic.play().catch(err => console.log("BGM ketahan browser:", err));
 
             setTimeout(() => {
                 typeWriter("Halo, kamu pasti cewe aku...", () => {
@@ -1137,7 +1171,6 @@
             }, 500);
         }
 
-        // --- SISTEM NGETIK ---
         function typeWriter(text, callback) {
             dialogueBox.innerHTML = ''; btnArea.innerHTML = '';
             character.classList.add('talking');
@@ -1273,12 +1306,21 @@
                                     character.classList.add('fighting-steve', 'dash-steve');
                                     pillagers.classList.add('fighting-pillager', 'dash-pillager');
 
+                                    // --- SOUND EFEK GELUD MULAI ---
+                                    let geludSound = setInterval(() => {
+                                        playHitSound();
+                                    }, 200);
+
                                     setTimeout(() => {
+                                        clearInterval(geludSound);
+
                                         character.classList.remove('fighting-steve', 'dash-steve');
                                         pillagers.classList.remove('fighting-pillager', 'dash-pillager');
 
                                         document.getElementById('pillager-1').classList.add('knockback-left');
                                         document.getElementById('pillager-2').classList.add('knockback-right');
+
+                                        playHitSound(); // Suara Pillager Terpental
 
                                         setTimeout(() => {
                                             character.style.left = '50%';
@@ -1339,12 +1381,14 @@
                     setTimeout(() => {
                         groundChest.style.display = 'none';
 
+                        // REVISI KOTAK DIALOG TURUN KE BAWAH
+                        dialogueContainer.classList.add('dialogue-bottom');
+
                         const flower = document.getElementById('final-flower');
                         flower.style.display = 'flex';
                         void flower.offsetWidth;
                         flower.classList.add('pop');
 
-                        // Bunyikan nada panjang bahagia pakai oscillator
                         if (audioCtx && audioCtx.state === 'running') {
                             const osc = audioCtx.createOscillator();
                             const gn = audioCtx.createGain();
@@ -1356,7 +1400,7 @@
                             osc.start(); osc.stop(audioCtx.currentTime + 1.5);
                         }
 
-                        typeWriter("<br><br><span class='pink-text'>Yeyy kmu dapet bunga dari Thiee... Silahkan ambil diluar rumah yah...</span>", () => { });
+                        typeWriter("<span class='pink-text'>Yeyy kmu dapet bunga dari Thiee... Silahkan ambil diluar rumah yah...</span>", () => { });
 
                     }, 1500);
 
