@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Get Well Soon! 🌸</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        /* --- OPTIMASI MOBILE & iOS --- */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* --- WALLPAPER LARAGON --- */
+        #wallpaper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background-image: url('wallpaper.png');
+            background-size: cover;
+            background-position: center;
+            background-color: #ffb7c5;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Press Start 2P', cursive;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+
+        .petal {
+            position: absolute;
+            top: -10px;
+            background-color: #ff9eb5;
+            border-radius: 15px 0 15px 0;
+            width: 15px;
+            height: 15px;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            z-index: 1;
+            transform: translateZ(0);
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* --- POSISI DEFAULT --- */
+        :root {
+            --ground-level: 220px;
+        }
+
+        /* --- MEDIA QUERY UNTUK HP --- */
+        @media (max-width: 600px),
+        (max-height: 750px) {
+            :root {
+                --ground-level: 240px;
+            }
+
+            .mc-box {
+                margin-bottom: 20px !important;
+                padding: 15px !important;
+                width: 92% !important;
+                min-height: 100px !important;
+            }
+
+            .dialogue-text {
+                font-size: 11px !important;
+                line-height: 1.6 !important;
+                min-height: 50px !important;
+            }
+
+            .mc-btn {
+                font-size: 9px !important;
+                padding: 12px 10px !important;
+                margin-top: 5px !important;
+            }
+        }
+
+        /* --- KARAKTER STEVE --- */
+        .character-container {
+            position: absolute;
+            bottom: var(--ground-level);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: left 0.8s ease-in-out, transform 0.3s;
+        }
+
+        .emote {
+            position: absolute;
+            top: -50px;
+            font-size: 35px;
+            text-shadow: 3px 3px #000;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .emote.show {
+            opacity: 1;
+        }
+
+        .emote-angry {
+            color: #ff4757;
+        }
+
+        .emote-think {
+            color: #feca57;
+        }
+
+        .emote-happy {
+            color: #ff4757;
+            font-size: 40px;
+        }
+
+        .emote-sad {
+            color: #00a8ff;
+            font-size: 35px;
+        }
+
+        .idle {
+            animation: breathe 0.6s infinite alternate ease-in-out;
+        }
+
+        @keyframes breathe {
+            0% {
+                transform: translateX(-50%) translateY(0) scaleY(1);
+            }
+
+            100% {
+                transform: translateX(-50%) translateY(-12px) scaleY(0.96);
+            }
+        }
+
+        .head {
+            width: 70px;
+            height: 70px;
+            background-color: #d9a066;
+            position: relative;
+            box-shadow: inset -4px -4px rgba(0, 0, 0, 0.15);
+            z-index: 3;
+        }
+
+        .hair {
+            width: 100%;
+            height: 16px;
+            background-color: #301d0a;
+            position: absolute;
+            top: 0;
+        }
+
+        .hair-side {
+            width: 12px;
+            height: 35px;
+            background-color: #301d0a;
+            position: absolute;
+            top: 0;
+        }
+
+        .hair-side.left {
+            left: 0;
+        }
+
+        .hair-side.right {
+            right: 0;
+        }
+
+        .eyebrow {
+            width: 18px;
+            height: 4px;
+            background-color: #211207;
+            position: absolute;
+            top: 22px;
+            display: none;
+            z-index: 4;
+        }
+
+        .eyebrow.left {
+            left: 8px;
+            transform: rotate(15deg);
+        }
+
+        .eyebrow.right {
+            right: 8px;
+            transform: rotate(-15deg);
+        }
+
+        .pose-angry .eyebrow {
+            display: block;
+        }
+
+        .pose-sad .eyebrow {
+            display: block;
+            top: 20px;
+        }
+
+        .pose-sad .eyebrow.left {
+            transform: rotate(-15deg);
+        }
+
+        .pose-sad .eyebrow.right {
+            transform: rotate(15deg);
+        }
+
+        .eye {
+            width: 18px;
+            height: 12px;
+            background-color: #fff;
+            position: absolute;
+            top: 30px;
+            display: flex;
+        }
+
+        .eye.left {
+            left: 10px;
+        }
+
+        .eye.right {
+            right: 10px;
+        }
+
+        .pupil {
+            width: 8px;
+            height: 12px;
+            background-color: #4a4185;
+            margin-left: auto;
+        }
+
+        .eye.right .pupil {
+            margin-left: 0;
+        }
+
+        .nose {
+            width: 12px;
+            height: 8px;
+            background-color: #9c6c41;
+            position: absolute;
+            top: 42px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .mouth-area {
+            width: 24px;
+            height: 12px;
+            background-color: #5c3a21;
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .mouth {
+            width: 14px;
+            height: 4px;
+            background-color: #211207;
+            transition: height 0.1s;
+            margin-top: 2px;
+        }
+
+        .talking .mouth {
+            animation: talk 0.15s infinite alternate steps(2);
+        }
+
+        @keyframes talk {
+            0% {
+                height: 4px;
+            }
+
+            100% {
+                height: 10px;
+            }
+        }
+
+        .pose-happy .mouth {
+            border-radius: 0 0 10px 10px;
+            height: 6px;
+        }
+
+        .torso-group {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            margin-top: -2px;
+        }
+
+        .body-char {
+            width: 70px;
+            height: 70px;
+            background-color: #00a8ff;
+            box-shadow: inset -6px -6px rgba(0, 0, 0, 0.15);
+        }
+
+        .arm {
+            width: 25px;
+            height: 70px;
+            background-color: #00a8ff;
+            position: relative;
+            transform-origin: top center;
+            transition: all 0.3s;
+        }
+
+        .arm::after {
+            content: '';
+            width: 100%;
+            height: 35px;
+            background-color: #d9a066;
+            position: absolute;
+            bottom: 0;
+            box-shadow: inset -4px -4px rgba(0, 0, 0, 0.15);
+        }
+
+        .idle .arm.left {
+            animation: armSwing 1.2s infinite alternate ease-in-out;
+        }
+
+        .idle .arm.right {
+            animation: armSwing 1.2s infinite alternate-reverse ease-in-out;
+        }
+
+        @keyframes armSwing {
+            0% {
+                transform: rotate(-3deg);
+            }
+
+            100% {
+                transform: rotate(3deg);
+            }
+        }
+
+        .pose-thinking .arm.left {
+            animation: none !important;
+            transform: rotate(145deg) translate(-10px, -10px) !important;
+            z-index: 5;
+        }
+
+        .pose-holding .arm.left {
+            animation: none !important;
+            transform: rotate(145deg) translate(-5px, -15px) !important;
+            z-index: 7;
+        }
+
+        .pose-holding .arm.right {
+            animation: none !important;
+            transform: rotate(-145deg) translate(5px, -15px) !important;
+            z-index: 7;
+        }
+
+        .dash-steve {
+            animation: dashSteve 0.15s infinite alternate ease-in-out !important;
+        }
+
+        @keyframes dashSteve {
+            0% {
+                left: calc(50% + 40px);
+            }
+
+            100% {
+                left: calc(50% + 30px);
+            }
+        }
+
+        .fighting-steve .arm.left {
+            animation: punchSteve 0.15s infinite alternate linear !important;
+            z-index: 8;
+        }
+
+        @keyframes punchSteve {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(90deg) translate(10px, -10px);
+            }
+        }
+
+        .legs {
+            width: 70px;
+            height: 40px;
+            background-color: #413d73;
+            box-shadow: inset -6px -6px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            margin-top: -2px;
+        }
+
+        .run-off {
+            left: 150vw !important;
+            transform: translateX(-50%) rotate(15deg) translateY(-20px) !important;
+        }
+
+        /* --- KARAKTER VILLAGER --- */
+        .villager-container {
+            position: absolute;
+            bottom: var(--ground-level);
+            left: 150vw;
+            transform: translateX(-50%);
+            z-index: 6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .walking {
+            animation: walkBob infinite alternate linear;
+        }
+
+        @keyframes walkBob {
+            0% {
+                padding-bottom: 0;
+            }
+
+            100% {
+                padding-bottom: 8px;
+            }
+        }
+
+        .v-head {
+            width: 50px;
+            height: 60px;
+            background-color: #cda87a;
+            border: 4px solid #111;
+            position: relative;
+            z-index: 3;
+        }
+
+        .v-nose {
+            width: 12px;
+            height: 22px;
+            background-color: #a47c55;
+            border: 4px solid #111;
+            border-top: none;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+        }
+
+        .v-eye {
+            width: 10px;
+            height: 14px;
+            background: #fff;
+            position: absolute;
+            top: 25px;
+            border: 4px solid #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .v-eye.left {
+            left: 4px;
+        }
+
+        .v-eye.right {
+            right: 4px;
+        }
+
+        .v-pupil {
+            width: 4px;
+            height: 8px;
+            background: #2f6b2f;
+        }
+
+        .v-body {
+            width: 50px;
+            height: 65px;
+            background-color: #6b4d31;
+            border: 4px solid #111;
+            border-top: none;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+        }
+
+        .v-arms {
+            width: 60px;
+            height: 25px;
+            background-color: #a47c55;
+            border: 4px solid #111;
+            position: absolute;
+            top: 15px;
+            z-index: 5;
+        }
+
+        .holding {
+            position: absolute;
+            top: 25px;
+            z-index: 6;
+        }
+
+        .v-legs {
+            width: 50px;
+            height: 35px;
+            background-color: #fff;
+            border: 4px solid #111;
+            border-top: none;
+            z-index: 1;
+        }
+
+        /* --- KARAKTER PILLAGER (MUSUH) --- */
+        .pillager-group {
+            position: absolute;
+            bottom: var(--ground-level);
+            left: -50vw;
+            display: flex;
+            gap: 20px;
+            z-index: 6;
+            transition: left 1s ease-in-out;
+        }
+
+        .pillager {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .p-head {
+            width: 50px;
+            height: 60px;
+            background-color: #959b9b;
+            border: 4px solid #111;
+            position: relative;
+            z-index: 3;
+        }
+
+        .p-eyebrow {
+            width: 14px;
+            height: 4px;
+            background-color: #111;
+            position: absolute;
+            top: 20px;
+            z-index: 4;
+        }
+
+        .p-eyebrow.left {
+            left: 4px;
+            transform: rotate(15deg);
+        }
+
+        .p-eyebrow.right {
+            right: 4px;
+            transform: rotate(-15deg);
+        }
+
+        .p-nose {
+            width: 12px;
+            height: 18px;
+            background-color: #7a7f7f;
+            border: 4px solid #111;
+            border-top: none;
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+
+        .p-eye {
+            width: 10px;
+            height: 14px;
+            background: #fff;
+            position: absolute;
+            top: 25px;
+            border: 4px solid #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .p-eye.left {
+            left: 4px;
+        }
+
+        .p-eye.right {
+            right: 4px;
+        }
+
+        .p-pupil {
+            width: 4px;
+            height: 8px;
+            background: #377d37;
+        }
+
+        .p-body-container {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            margin-top: -4px;
+        }
+
+        .p-body {
+            width: 50px;
+            height: 65px;
+            background-color: #272c2d;
+            border: 4px solid #111;
+            border-top: none;
+        }
+
+        .p-arm {
+            width: 20px;
+            height: 65px;
+            background-color: #272c2d;
+            border: 4px solid #111;
+            border-top: none;
+            position: relative;
+            transform-origin: top center;
+            transition: all 0.2s;
+        }
+
+        .p-arm::after {
+            content: '';
+            width: 100%;
+            height: 25px;
+            background-color: #959b9b;
+            position: absolute;
+            bottom: 0;
+            border-top: 4px solid #111;
+        }
+
+        .p-legs {
+            width: 50px;
+            height: 35px;
+            background-color: #1a1c1d;
+            border: 4px solid #111;
+            border-top: none;
+            z-index: 1;
+        }
+
+        .dash-pillager {
+            animation: dashPillager 0.15s infinite alternate ease-in-out !important;
+        }
+
+        @keyframes dashPillager {
+            0% {
+                left: calc(50% - 130px);
+            }
+
+            100% {
+                left: calc(50% - 120px);
+            }
+        }
+
+        .fighting-pillager .p-arm.right {
+            animation: punchPillager 0.15s infinite alternate linear !important;
+            z-index: 8;
+        }
+
+        @keyframes punchPillager {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(-90deg) translate(-10px, -10px);
+            }
+        }
+
+        .knockback-left {
+            animation: flyLeft 0.5s forwards !important;
+        }
+
+        @keyframes flyLeft {
+            to {
+                transform: translate(-50vw, -100px) rotate(-90deg);
+                opacity: 0;
+            }
+        }
+
+        .knockback-right {
+            animation: flyRight 0.5s forwards !important;
+        }
+
+        @keyframes flyRight {
+            to {
+                transform: translate(50vw, -100px) rotate(90deg);
+                opacity: 0;
+            }
+        }
+
+        /* --- OBJEK PETI (CHEST) & EFEK SUBWAY SURFERS --- */
+        .mc-chest {
+            width: 45px;
+            height: 45px;
+            background-color: #8c5320;
+            border: 4px solid #111;
+            box-shadow: inset -4px -4px #4a2c11, inset 4px 4px #b87333;
+            position: relative;
+        }
+
+        .mc-chest::after {
+            content: '';
+            width: 8px;
+            height: 12px;
+            background-color: #999;
+            border: 2px solid #111;
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .steve-chest {
+            position: absolute;
+            top: 15px;
+            z-index: 6;
+            display: none;
+        }
+
+        .chest-ground {
+            position: absolute;
+            bottom: var(--ground-level);
+            left: calc(50% + 80px);
+            transform: translateX(-50%);
+            display: none;
+            z-index: 20;
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .chest-ready {
+            cursor: pointer;
+            animation: glowPulse 1.5s infinite alternate;
+        }
+
+        .chest-ready:hover,
+        .chest-ready:active {
+            transform: translateX(-50%) scale(1.1);
+            filter: brightness(1.2);
+        }
+
+        @keyframes glowPulse {
+            0% {
+                box-shadow: 0 0 5px #feca57;
+            }
+
+            100% {
+                box-shadow: 0 0 30px #feca57;
+            }
+        }
+
+        /* Overlay Gelap Layar */
+        .overlay-dark {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 90;
+            display: none;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        /* Cahaya Berputar di Belakang Peti (DIPERBAIKI POSISI TENGAHNYA) */
+        .light-burst {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 150vmax;
+            height: 150vmax;
+            background: repeating-conic-gradient(from 0deg, rgba(255, 235, 100, 0.8) 0deg 15deg, transparent 15deg 30deg);
+            transform: translate(-50%, -50%);
+            z-index: 95;
+            display: none;
+            opacity: 0;
+            animation: spinBurst 5s linear infinite;
+            transition: opacity 1s;
+            transform-origin: center;
+            /* Kunci rotasi dari tengah */
+        }
+
+        @keyframes spinBurst {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        /* Peti Zoom ke Tengah Layar */
+        .chest-zoomed {
+            bottom: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, 50%) scale(4) !important;
+            z-index: 100 !important;
+            cursor: default;
+        }
+
+        /* Peti Bergetar Kuat */
+        .chest-shake {
+            animation: shakeChest 0.1s infinite alternate !important;
+        }
+
+        @keyframes shakeChest {
+            0% {
+                transform: translate(-50%, 50%) scale(4) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-52%, 48%) scale(4) rotate(5deg);
+            }
+        }
+
+        /* Bunga Raksasa Kejutan (DIPERBAIKI FIX TENGAH) */
+        .final-flower {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 80px;
+            z-index: 101;
+            display: none;
+            filter: drop-shadow(0 0 20px #ff9eb5);
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Reset Line Height & White Space biar emojinya ga geser */
+            line-height: 1;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        @media (min-width: 600px) {
+            .final-flower {
+                font-size: 100px;
+            }
+        }
+
+        .final-flower.pop {
+            transform: translate(-50%, -50%) scale(2);
+        }
+
+        /* --- DIALOG BOX --- */
+        .mc-box {
+            background-color: #c6c6c6;
+            border: 6px solid #000;
+            box-shadow: inset -6px -6px #555, inset 6px 6px #fff;
+            padding: 25px;
+            width: 90%;
+            max-width: 600px;
+            min-height: 120px;
+            position: relative;
+            z-index: 10;
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .dialogue-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #333;
+            min-height: 60px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .mc-btn {
+            background-color: #8b8b8b;
+            border: 4px solid #000;
+            box-shadow: inset -4px -4px #373737, inset 4px 4px #d8d8d8;
+            color: white;
+            padding: 12px 15px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            cursor: pointer;
+            text-shadow: 2px 2px #000;
+            display: none;
+            touch-action: manipulation;
+        }
+
+        .mc-btn:active {
+            box-shadow: inset 4px 4px #373737, inset -4px -4px #d8d8d8;
+        }
+
+        .action-text {
+            color: #888;
+            font-style: italic;
+            font-size: 12px;
+        }
+
+        .enemy-text {
+            color: #c0392b;
+            font-weight: bold;
+        }
+
+        .pink-text {
+            color: #d81b60;
+            font-weight: bold;
+            font-size: 14px;
+            text-shadow: 1px 1px #fff;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="wallpaper"></div>
+
+    <script>
+        for (let i = 0; i < 25; i++) {
+            let petal = document.createElement('div');
+            petal.className = 'petal';
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            petal.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(petal);
+        }
+    </script>
+
+    <!-- Overlay & Efek Cahaya -->
+    <div id="overlay" class="overlay-dark"></div>
+    <div id="light-burst" class="light-burst"></div>
+    <div id="final-flower" class="final-flower">💐✨</div>
+
+    <!-- Chest di tanah -->
+    <div id="chest-ground" class="mc-chest chest-ground" onclick="bukaPetiAkhir()"></div>
+
+    <!-- Karakter Villager -->
+    <div id="villager" class="villager-container">
+        <div class="v-head">
+            <div class="v-eye left">
+                <div class="v-pupil"></div>
+            </div>
+            <div class="v-eye right">
+                <div class="v-pupil"></div>
+            </div>
+            <div class="v-nose"></div>
+        </div>
+        <div class="v-body">
+            <div class="v-arms"></div>
+            <div id="held-chest" class="mc-chest holding"></div>
+        </div>
+        <div class="v-legs"></div>
+    </div>
+
+    <!-- Gerombolan Pillager -->
+    <div id="pillagers" class="pillager-group">
+        <div class="pillager" id="pillager-1">
+            <div class="p-head">
+                <div class="p-eyebrow left"></div>
+                <div class="p-eyebrow right"></div>
+                <div class="p-eye left">
+                    <div class="p-pupil"></div>
+                </div>
+                <div class="p-eye right">
+                    <div class="p-pupil"></div>
+                </div>
+                <div class="p-nose"></div>
+            </div>
+            <div class="p-body-container">
+                <div class="p-arm left"></div>
+                <div class="p-body"></div>
+                <div class="p-arm right"></div>
+            </div>
+            <div class="p-legs"></div>
+        </div>
+        <div class="pillager" id="pillager-2">
+            <div class="p-head">
+                <div class="p-eyebrow left"></div>
+                <div class="p-eyebrow right"></div>
+                <div class="p-eye left">
+                    <div class="p-pupil"></div>
+                </div>
+                <div class="p-eye right">
+                    <div class="p-pupil"></div>
+                </div>
+                <div class="p-nose"></div>
+            </div>
+            <div class="p-body-container">
+                <div class="p-arm left"></div>
+                <div class="p-body"></div>
+                <div class="p-arm right"></div>
+            </div>
+            <div class="p-legs"></div>
+        </div>
+    </div>
+
+    <!-- Karakter Steve -->
+    <div id="character" class="character-container idle">
+        <div id="emote" class="emote">!</div>
+        <div class="head">
+            <div class="hair"></div>
+            <div class="hair-side left"></div>
+            <div class="hair-side right"></div>
+            <div class="eyebrow left"></div>
+            <div class="eyebrow right"></div>
+            <div class="eye left">
+                <div class="pupil"></div>
+            </div>
+            <div class="eye right">
+                <div class="pupil"></div>
+            </div>
+            <div class="nose"></div>
+            <div class="mouth-area">
+                <div id="mouth" class="mouth"></div>
+            </div>
+        </div>
+        <div class="torso-group">
+            <div class="arm left"></div>
+            <div class="body-char"></div>
+            <div id="steve-chest" class="mc-chest steve-chest"></div>
+            <div class="arm right"></div>
+        </div>
+        <div class="legs"></div>
+    </div>
+
+    <!-- UI Box -->
+    <div class="mc-box" id="dialogue-box">
+        <div id="dialogue" class="dialogue-text"></div>
+        <div id="btnArea" class="btn-container"></div>
+    </div>
+
+    <script>
+        const dialogueBox = document.getElementById('dialogue');
+        const dialogueContainer = document.getElementById('dialogue-box');
+        const btnArea = document.getElementById('btnArea');
+        const character = document.getElementById('character');
+        const emote = document.getElementById('emote');
+
+        function typeWriter(text, callback) {
+            dialogueBox.innerHTML = ''; btnArea.innerHTML = '';
+            character.classList.add('talking');
+            let i = 0; let speed = 40;
+            function type() {
+                if (i < text.length) {
+                    if (text.charAt(i) === '<') {
+                        let endTag = text.indexOf('>', i);
+                        dialogueBox.innerHTML += text.substring(i, endTag + 1);
+                        i = endTag + 1;
+                    } else {
+                        dialogueBox.innerHTML += text.charAt(i); i++;
+                    }
+                    setTimeout(type, speed);
+                } else {
+                    character.classList.remove('talking');
+                    if (callback) callback();
+                }
+            }
+            type();
+        }
+
+        function showButtons(buttonsHTML) {
+            btnArea.innerHTML = buttonsHTML;
+            const btns = btnArea.querySelectorAll('.mc-btn');
+            btns.forEach(btn => btn.style.display = 'block');
+        }
+
+        function karakterPergiNyariThie(callback) {
+            character.classList.remove('idle'); character.classList.add('run-off');
+            dialogueBox.innerHTML = "<span class='action-text'>... (Lari keluar layar nyari Thie bentar) ...</span>";
+            setTimeout(() => { character.classList.remove('run-off'); setTimeout(() => { character.classList.add('idle'); callback(); }, 1500); }, 2500);
+        }
+
+        function resetPose() {
+            character.classList.remove('pose-angry', 'pose-thinking', 'pose-happy', 'pose-sad');
+            emote.classList.remove('show');
+        }
+
+        // --- ALUR CERITA --- //
+        setTimeout(() => {
+            typeWriter("Halo, kmu pasti cewenya Thie yaa?", () => {
+                showButtons(`<button class="mc-btn" onclick="alurIya()">Iyaa</button> <button class="mc-btn" onclick="alurTidak()">Tidak</button>`);
+            });
+        }, 500);
+
+        function alurTidak() { typeWriter("Lah Thie gimana dah, katanya ini cewenya... Sebentar...", () => { setTimeout(() => { karakterPergiNyariThie(() => { typeWriter("Bener ko ini cewenya, kamu bohong ya?", () => { showButtons(`<button class="mc-btn" onclick="alurLanjut()">Iyaa deh aku ketahuan</button>`); }); }); }, 1000); }); }
+        function alurIya() { typeWriter("Sebentar, nanya Thie dulu ya...", () => { setTimeout(() => { karakterPergiNyariThie(() => { typeWriter("Oiya bener hehehe, aku dengar kamu sakit ya?", () => { tanyaKondisiSakit(); }); }); }, 1000); }); }
+        function alurLanjut() { typeWriter("Hehehe iseng banget... Btw, aku dengar kamu sakit ya?", () => { tanyaKondisiSakit(); }); }
+
+        function tanyaKondisiSakit() { showButtons(`<button class="mc-btn" onclick="jawabSakitNggak()">Nggak</button> <button class="mc-btn" onclick="jawabSakitIyaa()">Iyaa</button>`); }
+
+        function jawabSakitNggak() {
+            resetPose(); character.classList.add('pose-angry'); emote.innerText = "!"; emote.className = "emote emote-angry show";
+            typeWriter("Boong ah, udah ngaku aja", () => { showButtons(`<button class="mc-btn" onclick="jawabSakitIyaa()">Iyaudah deh</button>`); });
+        }
+
+        function jawabSakitIyaa() {
+            resetPose(); character.classList.add('pose-thinking'); emote.innerText = "?"; emote.className = "emote emote-think show";
+            typeWriter("Gimana keadaan kamu sekarang?", () => { showButtons(`<button class="mc-btn" onclick="kondisiMendingan()">Mendingan</button> <button class="mc-btn" onclick="kondisiMasihSakit()">Masih sakit</button>`); });
+        }
+
+        function kondisiMendingan() {
+            resetPose(); character.classList.add('pose-happy'); emote.innerText = "❤️"; emote.className = "emote emote-happy show";
+            typeWriter("Yeyy, syukurlah klo ada tanda baik, aku ada sesuatu biar kmu makin mendingan lagi nih...", () => { showButtons(`<button class="mc-btn" onclick="cutsceneVillager()">Apa tuh?</button>`); });
+        }
+
+        function kondisiMasihSakit() {
+            resetPose(); character.classList.add('pose-sad'); emote.innerText = "💧"; emote.className = "emote emote-sad show";
+            typeWriter("semoga mendingan yaa :((, aku ada sesuatu yg mungkin bisa hibur kmu...", () => { showButtons(`<button class="mc-btn" onclick="cutsceneVillager()">Apa tuh?</button>`); });
+        }
+
+        function cutsceneVillager() {
+            resetPose();
+            dialogueBox.innerHTML = "<span class='action-text'>... (Kurir Villager datang bawa paket) ...</span>";
+            btnArea.innerHTML = '';
+
+            const villager = document.getElementById('villager');
+            const heldChest = document.getElementById('held-chest');
+            const steveChest = document.getElementById('steve-chest');
+
+            villager.style.transition = 'left 2s linear'; villager.style.animationDuration = '0.25s';
+            villager.classList.add('walking');
+
+            setTimeout(() => { villager.style.left = '62%'; }, 100);
+
+            setTimeout(() => {
+                villager.classList.remove('walking');
+                heldChest.style.display = 'none'; steveChest.style.display = 'block'; character.classList.add('pose-holding');
+
+                setTimeout(() => {
+                    villager.style.transition = 'left 0.8s linear'; villager.style.animationDuration = '0.1s';
+                    villager.classList.add('walking'); villager.style.left = '150vw';
+
+                    setTimeout(() => {
+                        villager.classList.remove('walking');
+                        typeWriter("Sudah siap untuk tau apa isinya?", () => { showButtons(`<button class="mc-btn" onclick="cutscenePillager()">Siap!</button>`); });
+                    }, 1000);
+                }, 800);
+            }, 2100);
+        }
+
+        function cutscenePillager() {
+            btnArea.innerHTML = '';
+            dialogueBox.innerHTML = "<span class='action-text'>... (Tiba-tiba sekelompok Pillager datang mencegat!) ...</span>";
+
+            const pillagers = document.getElementById('pillagers');
+            const steveChest = document.getElementById('steve-chest');
+            const groundChest = document.getElementById('chest-ground');
+
+            pillagers.style.left = 'calc(50% - 130px)';
+
+            setTimeout(() => {
+                typeWriter("<span class='enemy-text'>[Pillager]: Berikan peti itu atau kamu akan menyesal!</span>", () => {
+
+                    setTimeout(() => {
+                        resetPose(); character.classList.add('pose-angry');
+                        typeWriter("Tidak, ini untuk Cewenya Thie!", () => {
+
+                            setTimeout(() => {
+                                character.classList.remove('pose-holding');
+                                steveChest.style.display = 'none';
+                                groundChest.style.display = 'block';
+                                groundChest.style.left = 'calc(50% + 80px)';
+
+                                dialogueBox.innerHTML = "<span class='action-text'>... (Pertarungan sengit terjadi!) ...</span>";
+
+                                character.classList.remove('idle');
+                                character.style.left = 'calc(50% + 40px)';
+
+                                setTimeout(() => {
+                                    character.classList.add('fighting-steve', 'dash-steve');
+                                    pillagers.classList.add('fighting-pillager', 'dash-pillager');
+
+                                    setTimeout(() => {
+                                        character.classList.remove('fighting-steve', 'dash-steve');
+                                        pillagers.classList.remove('fighting-pillager', 'dash-pillager');
+
+                                        document.getElementById('pillager-1').classList.add('knockback-left');
+                                        document.getElementById('pillager-2').classList.add('knockback-right');
+
+                                        setTimeout(() => {
+                                            character.style.left = '50%';
+                                            character.classList.add('idle');
+                                            resetPose();
+
+                                            setTimeout(() => {
+                                                typeWriter("Maaf tadi ada gangguan kecil, jadi, apakah kamu siap melihat peti ini isinya apa?", () => {
+                                                    showButtons(`<button class="mc-btn" onclick="siapBukaPeti()">Siap!</button>`);
+                                                });
+                                            }, 1000);
+
+                                        }, 500);
+                                    }, 1500);
+
+                                }, 800);
+
+                            }, 1500);
+                        });
+                    }, 2000);
+                });
+            }, 1200);
+        }
+
+        function siapBukaPeti() {
+            btnArea.innerHTML = '';
+            dialogueBox.innerHTML = "<span class='action-text'>[ KLIK PETI DI SEBELAH STEVE UNTUK MEMBUKA ]</span>";
+
+            const groundChest = document.getElementById('chest-ground');
+            groundChest.classList.add('chest-ready');
+        }
+
+        // --- FINAL SURPRISE: SUBWAY SURFERS ZOOM EFEK --- //
+        function bukaPetiAkhir() {
+            const groundChest = document.getElementById('chest-ground');
+
+            if (groundChest.classList.contains('chest-ready')) {
+                groundChest.classList.remove('chest-ready');
+                dialogueBox.innerHTML = '';
+                dialogueContainer.style.zIndex = '102';
+
+                const overlay = document.getElementById('overlay');
+                const burst = document.getElementById('light-burst');
+
+                overlay.style.display = 'block';
+                burst.style.display = 'block';
+
+                void overlay.offsetWidth;
+
+                overlay.style.opacity = '1';
+                burst.style.opacity = '1';
+
+                groundChest.classList.add('chest-zoomed');
+
+                setTimeout(() => {
+                    groundChest.classList.add('chest-shake');
+
+                    setTimeout(() => {
+                        groundChest.style.display = 'none';
+
+                        const flower = document.getElementById('final-flower');
+                        flower.style.display = 'flex'; // Menggunakan flex biar 100% di tengah
+                        void flower.offsetWidth;
+                        flower.classList.add('pop');
+
+                        // Teks Final yang udah di-personalize pakai nama Thie!
+                        typeWriter("<br><br><span class='pink-text'>Yeyy kmu dapet bunga dari Thiee... Ditunggu yah, kurir sedang UTIWI</span>", () => { });
+
+                    }, 1500);
+
+                }, 1000);
+            }
+        }
+    </script>
+</body>
+
+</html>
