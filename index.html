@@ -653,6 +653,40 @@
             z-index: 5;
         }
 
+        .p-mouth {
+            width: 8px;
+            height: 2px;
+            background-color: #111;
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+            /* Di belakang hidung (5) */
+        }
+
+        .talking .p-mouth {
+            animation: talk 0.2s infinite alternate;
+        }
+
+        /* Ekspresi Pillager Kena Hit */
+        .pillager.hurt .p-eyebrow.left {
+            transform: rotate(-20deg) translateY(-2px);
+        }
+        .pillager.hurt .p-eyebrow.right {
+            transform: rotate(20deg) translateY(-2px);
+        }
+        .pillager.hurt .p-eye {
+            height: 4px;
+            top: 30px;
+        }
+        .pillager.hurt .p-mouth {
+            height: 8px;
+            bottom: -14px;
+            border-radius: 4px;
+            background-color: #4a0000;
+        }
+
         .p-eye {
             width: 10px;
             height: 14px;
@@ -1219,6 +1253,7 @@
                     <div class="p-pupil"></div>
                 </div>
                 <div class="p-nose"></div>
+                <div class="p-mouth"></div>
             </div>
             <div class="p-body-container">
                 <div class="p-arm left"></div>
@@ -1241,6 +1276,7 @@
                     <div class="p-pupil"></div>
                 </div>
                 <div class="p-nose"></div>
+                <div class="p-mouth"></div>
             </div>
             <div class="p-body-container">
                 <div class="p-arm left"></div>
@@ -1337,7 +1373,14 @@
 
         function typeWriter(text, callback) {
             dialogueBox.innerHTML = ''; btnArea.innerHTML = '';
-            character.classList.add('talking');
+
+            // Tentukan siapa yang ngomong
+            let speaker = character; // Default Steve
+            if (text.includes('[Pillager]')) {
+                speaker = document.getElementById('pillager-1');
+            }
+
+            speaker.classList.add('talking');
             let i = 0; let speed = 40;
             function type() {
                 if (i < text.length) {
@@ -1352,7 +1395,7 @@
                     }
                     setTimeout(type, speed);
                 } else {
-                    character.classList.remove('talking');
+                    speaker.classList.remove('talking');
                     if (callback) callback();
                 }
             }
@@ -1396,7 +1439,7 @@
         function jawabSakitNggak() { resetPose(); character.classList.add('pose-angry'); emote.innerText = "!"; emote.className = "emote emote-angry show"; typeWriter("Boong ah, udah ngaku aja", () => { showButtons(`<button class="mc-btn" onclick="jawabSakitIyaa()">Iyaudah deh</button>`); }); }
         function jawabSakitIyaa() { resetPose(); character.classList.add('pose-thinking'); emote.innerText = "?"; emote.className = "emote emote-think show"; typeWriter("Gimana keadaan kamu sekarang?", () => { showButtons(`<button class="mc-btn" onclick="kondisiMendingan()">Mendingan</button> <button class="mc-btn" onclick="kondisiMasihSakit()">Masih sakit</button>`); }); }
         function kondisiMendingan() { resetPose(); character.classList.add('pose-happy'); emote.innerText = "❤️"; emote.className = "emote emote-happy show"; typeWriter("Yeyy, syukurlah klo ada tanda baik, aku ada sesuatu biar kmu makin mendingan lagi nih...", () => { showButtons(`<button class="mc-btn" onclick="cutsceneVillager()">Apa tuh?</button>`); }); }
-        function kondisiMasihSakit() { resetPose(); character.classList.add('pose-sad'); emote.innerText = "💧"; emote.className = "emote emote-sad show"; typeWriter("semoga mendingan yaa :((, aku ada sesuatu yg mungkin bisa hibur kmu...", () => { showButtons(`<button class="mc-btn" onclick="cutsceneVillager()">Apa tuh?</button>`); }); }
+        function kondisiMasihSakit() { resetPose(); character.classList.add('pose-sad'); emote.innerText = "💧"; emote.className = "emote emote-sad show"; typeWriter("Semoga mendingan yaa :((, aku ada sesuatu yg mungkin bisa hibur kmu...", () => { showButtons(`<button class="mc-btn" onclick="cutsceneVillager()">Apa tuh?</button>`); }); }
 
         function cutsceneVillager() {
             resetPose();
@@ -1483,6 +1526,7 @@
 
             const targetEl = document.getElementById('pillager-' + targetId);
             targetEl.style.filter = 'brightness(2) sepia(1) hue-rotate(-50deg) saturate(5)';
+            targetEl.classList.add('hurt');
 
             pillagerHP[targetIdx]--;
             let hpPercent = pillagerHP[targetIdx] * 10;
@@ -1494,6 +1538,7 @@
 
             setTimeout(() => {
                 targetEl.style.filter = 'none';
+                targetEl.classList.remove('hurt');
                 character.style.left = STEVE_HOME_X;
                 character.classList.remove('fighting-steve');
 
